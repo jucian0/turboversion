@@ -1,3 +1,7 @@
+## [3.0.2](https://github.com/jucian0/turboversion/compare/v3.0.1...v3.0.2) (2025-07-30)
+
+
+
 ## [3.0.1](https://github.com/jucian0/turboversion/compare/v3.0.0...v3.0.1) (2025-07-27)
 
 
