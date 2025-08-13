@@ -7,54 +7,31 @@ description: Master TurboVersion's command-line interface
 
 ## Core Commands
 
-### `bump` - Version Management
+### `turboversion` - Version Management
+By default `turboversion` runs automatic versioning based on commit messages or branch names. Use `--bump` to specify version types directly.
+
 ```bash
-turboversion bump [options]
+turboversion --bump [options]
 ```
 **Options**:
 | Flag | Description | Example |
 |------|-------------|---------|
-| `--major`/`--minor`/`--patch` | Force version bump type | `bump --major` |
-| `--preid <identifier>` | Prerelease tag (alpha/beta/rc) | `bump --preid beta` |
-| `--package <name>` | Target specific package | `bump --package @app/core` |
-| `--dry-run` | Preview changes | `bump --dry-run` |
-| `--async` | Async mode (monorepos) | `bump --async` |
-| `--sync` | Sync mode | `bump --sync` |
+| `--bump major`/`--minor`/`--patch` | Force version bump type | `--bump major` |
+| `--target <package name>` | Target specific package | ` --target @app/core` |
+| `--async` | Async mode (monorepos) | `--async` |
+| `--sync` | Sync mode | `--sync` |
 
 **Examples**:
 ```bash
 # Minor release with changelog
-turboversion bump --minor
+turboversion --bump minor
 
 # Prerelease for testing
-turboversion bump --preid alpha
+turboversion --bump prerelease
 
 # Monorepo selective update
-turboversion bump --package=@ui/button --minor
+turboversion --bump minor --target @ui/button
 ```
-
----
-
-### `changelog` - Changelog Generation
-```bash
-turboversion changelog [options]
-```
-**Options**:
-| Flag | Description | Example |
-|------|-------------|---------|
-| `--from <ref>` | Start commit/tag | `changelog --from v1.0.0` |
-| `--to <ref>` | End commit/tag | `changelog --to HEAD` |
-| `--file <path>` | Output file | `changelog --file RELEASES.md` |
-
-**Examples**:
-```bash
-# Generate since last release
-turboversion changelog
-
-# Custom range to file
-turboversion changelog --from v2.1.0 --to v2.3.0 --file CHANGES.md
-```
-
 ---
 
 ### `init` - Configuration Setup
@@ -75,9 +52,8 @@ Available for all commands:
 | Flag | Description | Example |
 |------|-------------|---------|
 | `--config <path>` | Custom config file | `--config ./custom.config.json` |
-| `--debug` | Verbose output | `--debug` |
-| `--silent` | Suppress logs | `--silent` |
 | `--version` | Show version | `--version` |
+| `--help` | Show help | `--help` |
 
 ---
 
@@ -85,20 +61,17 @@ Available for all commands:
 
 ### 1. Production Release
 ```bash
-turboversion bump --minor && git push --follow-tags
+turboversion --bump minor && git push --follow-tags
 ```
 
 ### 2. Monorepo Hotfix
 ```bash
-turboversion bump --patch --package @lib/utils \
-  --commit "fix(utils): emergency patch"
+turboversion --bump patch --target @lib/utils
 ```
 
 ### 3. CI/CD Integration
 ```bash
-turboversion bump --minor \
-  --commit "chore(release): ${version} [skip-ci]" \
-  --debug
+turboversion --bump minor
 ```
 
 ---
@@ -113,17 +86,3 @@ turboversion bump --minor \
 | 4 | No changes detected | Verify commit history |
 
 ---
-
-## Command Aliases
-For faster usage:
-| Full Command | Alias |
-|-------------|-------|
-| `bump` | `tv bump` |
-| `changelog` | `tv log` |
-| `init` | `tv init` |
-
-```bash
-# Equivalent commands:
-turboversion bump --minor
-tv bump --minor
-```

@@ -7,6 +7,8 @@ import { syncedMode } from "./sync-mode";
 import { singleMode } from "./single-mode";
 import { asyncMode } from "./async-mode";
 import { loadConfig } from "../load-config";
+import { logger } from "../utils/logger";
+import packageJson from "../../package.json";
 
 type BumpOption =
   | "patch"
@@ -19,23 +21,20 @@ type BumpOption =
 type CommandOptions = {
   target?: string;
   bump?: BumpOption;
+  sync?: boolean;
+  async?: boolean;
+  config?: string;
+  version?: boolean;
 };
 
-export function bumpCommand(): Command {
-  const program = new Command();
-
+export function defaultCommand(program: Command): Command {
   return program
-    .command("bump")
-    .description(
-      "Version the application following the version.config.json specifications\n" +
-        chalk.gray("Default behavior depends on your configuration")
-    )
     .option(
       "-t, --target <project>",
       "Specific project to version (ignored in sync mode or single project mode)"
     )
     .addOption(
-      new Option("-t, --type <version>", "Specify version bump type")
+      new Option("--bump <type>", "Specify version bump type")
         .choices([
           "patch",
           "minor",
@@ -47,18 +46,40 @@ export function bumpCommand(): Command {
         ])
         .makeOptionMandatory(false)
     )
+    .option(
+      "-s, --sync",
+      "Sync all projects to the same version (ignored in async mode)"
+    )
+    .option(
+      "-a, --async",
+      "Run the command asynchronously (ignored in sync mode)"
+    )
+    .option(
+      "-c, --config <path>",
+      "Path to the configuration file (default: version.config.json in the current directory)"
+    )
+    .option("-v, --version", "Show version of the tool")
     .addHelpText(
       "after",
       `\nExamples:
   ${chalk.cyan("$ turbo bump")}
-  ${chalk.cyan("$ turbo bump -b minor")}
-  ${chalk.cyan("$ turbo bump -t frontend")}`
+  ${chalk.cyan("$ turbo bump --bump minor")}
+  ${chalk.cyan("$ turbo bump --target frontend")}`
     )
     .action(async (options: CommandOptions) => {
       try {
-        const config = await loadConfig();
+        const config = await loadConfig(options.config);
+        const isSync = options.sync || config.sync;
 
-        if (config.sync && options.target) {
+        if (options.version) {
+          logger.info({
+            message: "Turboversion version",
+            details: `Version: ${packageJson.version}`,
+          });
+          exit(0);
+        }
+
+        if (isSync && options.target) {
           console.log(
             chalk.yellow.bold("⚠ Warning:") +
               chalk.yellow(
@@ -67,7 +88,7 @@ export function bumpCommand(): Command {
           );
         }
 
-        if (config.sync) {
+        if (isSync) {
           await syncedMode(config, options.bump);
         } else if (options.bump && options.target) {
           await singleMode(config, options);
@@ -84,3 +105,13 @@ export function bumpCommand(): Command {
       }
     });
 }
+
+/**
+ * CLI Commands:
+ * turboversion -> bump automatic versison based on conventional commits or branch
+ * turboversion --type/-t major/minor/patch/premajor/preminor/prepatch/prerelease -> bump version manually
+ * turboversion --bump/-p\b <package-name> -> bump version of a specific package in a monorepo
+ * turboversion --sync/-s -> sync versions of all packages in a monorepo to the same version
+ * turboversion --async/-a -> run the command asynchronously
+ * turboversion --config/-c <path-to-config-file> -> specify a custom config file
+ */

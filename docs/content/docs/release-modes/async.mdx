@@ -9,7 +9,7 @@ Async mode enables **granular version control** by only updating packages with a
 
 ```bash
 # Run in async mode (default for monorepos)
-turboversion bump --async
+turboversion --async
 # or via config
 { "sync": false }
 ```
@@ -97,7 +97,7 @@ api:   (unchanged)    (no commits → no bump)
 2. **Customize Bump Logic**
    Override automatic detection:
    ```bash
-   turboversion bump ui --minor
+   turboversion --bump minor
    ```
 
 ## Troubleshooting
@@ -108,5 +108,5 @@ api:   (unchanged)    (no commits → no bump)
 **Q: How to force all packages to update?**
 → Use sync mode instead:
 ```bash
-turboversion bump --sync
+turboversion --sync
 ```

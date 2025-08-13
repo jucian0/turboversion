@@ -5,8 +5,8 @@ import { Command } from "commander";
 import figlet from "figlet";
 import packageJson from "../package.json";
 import { initCommand } from "./init-command";
-import { bumpCommand } from "./bump-command";
 import { helpCommand } from "./help-command";
+import { defaultCommand } from "./default-command";
 
 const name = "Turboversion";
 
@@ -31,12 +31,9 @@ async function main() {
     .version(packageJson.version)
     .hook("preAction", showBanner)
     .addCommand(initCommand())
-    .addCommand(bumpCommand())
-    .addCommand(helpCommand())
-    .action(() => {
-      bumpCommand().parse(process.argv);
-    });
+    .addCommand(helpCommand());
 
+  defaultCommand(program);
   await program.parseAsync();
 }
 
@@ -44,3 +41,10 @@ main().catch((err) => {
   console.error(chalk.red("Error:"), err);
   process.exit(1);
 });
+
+/**
+ * CLI Commands:
+ * turboversion init -> initialize turboversion in the project
+ * turboversion help -> show help
+ * turboversion --version -> show version
+ */

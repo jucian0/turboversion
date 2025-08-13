@@ -12,10 +12,10 @@ export type PkgJson = {
   path?: string;
 };
 
-export async function loadConfig(): Promise<ConfigType> {
-  const localeProcess = cwd();
+export async function loadConfig(pathParam?: string): Promise<ConfigType> {
+  const pathConfig = pathParam || `${cwd()}/version.config.json`;
   const readFile = promisify(fs.readFile);
-  return readFile(`${localeProcess}/version.config.json`, "utf-8")
+  return readFile(pathConfig, "utf-8")
     .then((data) => {
       const config = JSON.parse(data);
       return versionConfigSchema.parse(config);

@@ -32,6 +32,7 @@ const emojiMap = new Map<LogStep, string>([
   ["skip", "⏭️"],
   ["success", "🎯"],
   ["help", "❓"],
+  ["info", "ℹ️"],
 ]);
 
 const colorMap = new Map<LogStep, (text: string) => string>([
@@ -45,6 +46,7 @@ const colorMap = new Map<LogStep, (text: string) => string>([
   ["skip", chalk.gray],
   ["success", chalk.green.bold],
   ["help", chalk.dim],
+  ["info", chalk.blue],
 ]);
 
 const boxenConfigMap = new Map<LogStep, Options | null>([
@@ -74,6 +76,7 @@ const boxenConfigMap = new Map<LogStep, Options | null>([
   ["tag", null],
   ["skip", null],
   ["success", null],
+  ["info", null],
 ]);
 
 function createLogHandler(step: LogStep): LogHandler {
@@ -113,4 +116,5 @@ export const logger = {
   skip: createLogHandler("skip"),
   success: createLogHandler("success"),
   help: createLogHandler("help"),
+  info: createLogHandler("info"),
 };

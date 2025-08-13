@@ -105,7 +105,7 @@ release_job:
 **Workflow**:
 ```bash
 git checkout -b release/v2
-turboversion bump --preid beta
+turboversion --bump beta
 ```
 
 ### 2. Custom Changelog Groups
@@ -133,10 +133,7 @@ turboversion bump --preid beta
   "sync": false,
   "tagPrefix": "pkg-",
   "analyzeCommitsSince": "last-week",
-  "updateInternalDependencies": false,
-  "plugins": [
-    "@company/turboversion-audit-plugin"
-  ]
+  "updateInternalDependencies": false
 }
 ```
 
@@ -150,7 +147,7 @@ turboversion bump --preid beta
 {
   "scripts": {
 -   "version": "lerna version",
-+   "version": "turboversion bump"
++   "version": "turboversion"
   }
 }
 ```

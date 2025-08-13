@@ -50,11 +50,11 @@ npx turboversion
 ## Basic Usage
 ```bash
 # Interactive version bump
-turboversion bump
+turboversion
 
 # Direct version specification
-turboversion bump minor
-turboversion bump patch --preid beta
+turboversion --bump minor
+turboversion --bump patch
 ```
 
 ## Configuration
@@ -86,26 +86,32 @@ release/* → Major bump
 ## Advanced Usage
 ```bash
 # Target specific package
-turboversion bump --target my-package
-
-# Dry run
-turboversion bump --dry-run
+turboversion --target my-package
 
 # Prerelease
-turboversion bump prerelease --preid alpha
+turboversion --bump prerelease
+
+# Config file
+turboversion --config version.config.json
+
+# Mode
+## Synchronized Mode
+turboversion --sync
+## Independent Mode
+turboversion --async
 ```
 
 ## Integration
 ### PNPM Workflow
 ```bash
-pnpm turboversion bump
+pnpm turboversion
 pnpm publish -r
 ```
 
 ### CI/CD Example
 ```yaml
 steps:
-  - run: npx turboversion bump
+  - run: npx turboversion
   - run: pnpm publish
 ```
 
