@@ -1,5 +1,11 @@
 import chalk from "chalk";
-import boxen, { Options } from "boxen";
+// boxen will be dynamically imported
+type BoxenOptions = {
+  padding?: number;
+  margin?: number;
+  borderStyle?: string;
+  borderColor?: string;
+};
 
 type LogStep =
   | "list"
@@ -19,7 +25,7 @@ type LogOptions = {
   details?: string;
 };
 
-type LogHandler = (options: LogOptions) => void;
+type LogHandler = (options: LogOptions) => Promise<void>;
 
 const emojiMap = new Map<LogStep, string>([
   ["list", "📜"],
@@ -32,7 +38,6 @@ const emojiMap = new Map<LogStep, string>([
   ["skip", "⏭️"],
   ["success", "🎯"],
   ["help", "❓"],
-  ["info", "ℹ️"],
 ]);
 
 const colorMap = new Map<LogStep, (text: string) => string>([
@@ -46,10 +51,9 @@ const colorMap = new Map<LogStep, (text: string) => string>([
   ["skip", chalk.gray],
   ["success", chalk.green.bold],
   ["help", chalk.dim],
-  ["info", chalk.blue],
 ]);
 
-const boxenConfigMap = new Map<LogStep, Options | null>([
+const boxenConfigMap = new Map<LogStep, BoxenOptions | null>([
   [
     "error",
     {
@@ -76,11 +80,11 @@ const boxenConfigMap = new Map<LogStep, Options | null>([
   ["tag", null],
   ["skip", null],
   ["success", null],
-  ["info", null],
 ]);
 
+
 function createLogHandler(step: LogStep): LogHandler {
-  return ({ message, packageName, details }) => {
+  return async ({ message, packageName, details }) => {
     const emoji = emojiMap.get(step) ?? "";
     const colorize = colorMap.get(step) ?? ((text) => text);
     const timestamp = chalk.dim(`[${new Date().toLocaleTimeString()}]`);
@@ -98,12 +102,17 @@ function createLogHandler(step: LogStep): LogHandler {
       parts += `\n${chalk.dim("└─ " + details)}`;
     }
 
-    const boxenConfig = boxenConfigMap.get(step);
-    const output = boxenConfig ? boxen(parts, boxenConfig) : parts;
+    const boxenConfig = boxenConfigMap.get(step) as BoxenOptions | null;
+    let output = parts;
+    if (boxenConfig) {
+      const boxenModule = await import("boxen");
+      output = boxenModule.default(parts, boxenConfig as any);
+    }
 
     step === "error" ? console.error(output) : console.log(output);
   };
 }
+
 
 export const logger = {
   list: createLogHandler("list"),
@@ -116,5 +125,4 @@ export const logger = {
   skip: createLogHandler("skip"),
   success: createLogHandler("success"),
   help: createLogHandler("help"),
-  info: createLogHandler("info"),
 };
