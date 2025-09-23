@@ -1,3 +1,12 @@
+## [3.0.4](https://github.com/jucian0/turboversion/compare/v3.0.3...v3.0.4) (2025-09-23)
+
+
+### Bug Fixes
+
+* **version:** fix esm module error ([533c761](https://github.com/jucian0/turboversion/commit/533c761d605eaf4117227b83bf3f11b7728d43ed))
+
+
+
 ## [3.0.3](https://github.com/jucian0/turboversion/compare/v3.0.2...v3.0.3) (2025-08-13)
 
 
