@@ -19,6 +19,7 @@ type Version = {
   path?: string;
   name?: string;
   prereleaseIdentifier?: string;
+  prerelease?: boolean;
 };
 
 export async function generateVersion({
@@ -29,6 +30,7 @@ export async function generateVersion({
   path,
   name,
   prereleaseIdentifier,
+  prerelease,
 }: Version) {
   try {
     const recommendation: any = await recommendedBumpAsync(
@@ -46,13 +48,26 @@ export async function generateVersion({
 
     const amountCommits = getCommitsLength(path ?? cwd());
 
-    if (latestTag && amountCommits === 0 && !type) {
+    if (latestTag && amountCommits === 0 && !type && !prerelease) {
       return null;
+    }
+
+    // Determine the bump type to use
+    let bumpType: semver.ReleaseType = type ?? recommended;
+
+    // Convert to prerelease type when --prerelease flag is set
+    if (prerelease && !type) {
+      const prereleaseMap: Record<string, semver.ReleaseType> = {
+        major: "premajor",
+        minor: "preminor",
+        patch: "prepatch",
+      };
+      bumpType = prereleaseMap[recommended] ?? "prerelease";
     }
 
     const next = semver.inc(
       currentVersion,
-      type ?? recommended,
+      bumpType,
       prereleaseIdentifier
     );
 

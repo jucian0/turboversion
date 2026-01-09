@@ -17,6 +17,7 @@ turboversion --bump [options]
 | Flag | Description | Example |
 |------|-------------|---------|
 | `--bump major`/`--minor`/`--patch` | Force version bump type | `--bump major` |
+| `-p`, `--prerelease` | Create prerelease using auto-detected bump type | `--prerelease` |
 | `--target <package name>` | Target specific package | ` --target @app/core` |
 | `--async` | Async mode (monorepos) | `--async` |
 | `--sync` | Sync mode | `--sync` |
@@ -26,7 +27,10 @@ turboversion --bump [options]
 # Minor release with changelog
 turboversion --bump minor
 
-# Prerelease for testing
+# Prerelease with auto-detected bump type (feat -> preminor, fix -> prepatch)
+turboversion --prerelease
+
+# Explicit prerelease type
 turboversion --bump prerelease
 
 # Monorepo selective update
@@ -72,6 +76,14 @@ turboversion --bump patch --target @lib/utils
 ### 3. CI/CD Integration
 ```bash
 turboversion --bump minor
+```
+
+### 4. Prerelease with auto-Detection
+```bash
+# Detects bump type and creates prerelease
+# feat commit/branch -> preminor (1.0.0 -> 1.1.0-beta.0)
+# fix commit/branch -> prepatch (1.0.0 -> 1.0.1-beta.0)
+turboversion --prerelease
 ```
 
 ---

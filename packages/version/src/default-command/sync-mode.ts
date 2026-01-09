@@ -12,7 +12,7 @@ import { gitProcess } from "../utils/git";
 import { logger } from "../utils/logger";
 import { ConfigType } from "../config-schema";
 
-export async function syncedMode(config: ConfigType, type?: ReleaseType) {
+export async function syncedMode(config: ConfigType, type?: ReleaseType, prerelease?: boolean) {
   try {
     const { preset, baseBranch, branchPattern = [] } = config;
     const { packages } = getPackagesSync(cwd());
@@ -40,6 +40,7 @@ export async function syncedMode(config: ConfigType, type?: ReleaseType) {
         tagPrefix,
         type,
         prereleaseIdentifier: config.prereleaseIdentifier,
+        prerelease,
       });
     }
 

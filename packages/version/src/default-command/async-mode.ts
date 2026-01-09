@@ -12,7 +12,7 @@ import { gitProcess } from "../utils/git";
 import { logger } from "../utils/logger";
 import { ConfigType } from "../config-schema";
 
-export async function asyncMode(config: ConfigType, type?: ReleaseType) {
+export async function asyncMode(config: ConfigType, type?: ReleaseType, prerelease?: boolean) {
   const { preset, baseBranch, branchPattern = [] } = config;
 
   try {
@@ -63,6 +63,7 @@ export async function asyncMode(config: ConfigType, type?: ReleaseType) {
             path,
             name,
             prereleaseIdentifier: config.prereleaseIdentifier,
+            prerelease,
           });
         }
 
