@@ -51,9 +51,6 @@ jobs:
       - name: Version bump
         run: npx turboversion bump
 
-      # 🚫 NO npm token
-      # 🚫 NO .npmrc auth
-      # ✅ OIDC ONLY
       - name: Publish packages
         run: pnpm -r publish --no-git-checks --filter=!docs
 
