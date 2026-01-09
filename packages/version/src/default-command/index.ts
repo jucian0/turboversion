@@ -25,6 +25,7 @@ type CommandOptions = {
   async?: boolean;
   config?: string;
   version?: boolean;
+  prerelease?: boolean;
 };
 
 export function defaultCommand(program: Command): Command {
@@ -53,6 +54,10 @@ export function defaultCommand(program: Command): Command {
     .option(
       "-a, --async",
       "Run the command asynchronously (ignored in sync mode)"
+    )
+    .option(
+      "-p, --prerelease",
+      "Create prerelease version using commit-detected bump type (e.g., feat commit -> preminor)"
     )
     .option(
       "-c, --config <path>",
@@ -89,11 +94,11 @@ export function defaultCommand(program: Command): Command {
         }
 
         if (isSync) {
-          await syncedMode(config, options.bump);
+          await syncedMode(config, options.bump, options.prerelease);
         } else if (options.bump && options.target) {
           await singleMode(config, options);
         } else {
-          await asyncMode(config, options.bump);
+          await asyncMode(config, options.bump, options.prerelease);
         }
       } catch (error: unknown) {
         const errorMessage =

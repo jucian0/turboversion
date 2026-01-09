@@ -152,11 +152,23 @@ pnpm publish -r
 ### Sync Mode Options
 
 - `-b`, `--bump`: Version bump type (patch|minor|major|premajor|preminor|prepatch|prerelease)
+- `-p`, `--prerelease`: Create prerelease using auto-detected bump type
 
 ### Async Mode Options
 
 - `-t`, `--target`: Specific package to bump
 - `-b`, `--bump`: Force specific bump type
+- `-p`, `--prerelease`: Create prerelease using commit-detected bump type
+
+### Prerelease with Auto-Detection
+
+The `--prerelease` flag analyzes commits to determine the bump type and automatically converts it to a prerelease:
+
+```bash
+# With a feat commit: 1.0.0 -> 1.1.0-beta.0
+# With a fix commit: 1.0.0 -> 1.0.1-beta.0
+turboversion --prerelease
+```
 
 ## Why Turboversion?
 
