@@ -7,13 +7,18 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -22,31 +27,35 @@ jobs:
         with:
           version: 7
 
-      - name: Setup Node.js 20.x
-        uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      # Ensure npm supports OIDC
+      - name: Upgrade npm
+        run: npm install -g npm@latest
 
       - name: Install Dependencies
-        shell: bash
-        run: pnpm i
+        run: pnpm install
 
       - name: Build
-        shell: bash
         run: pnpm build
 
-      - name: Temporally git user
-        shell: bash
-        run: git config --global user.name 'github-actions[bot]' && git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      - name: Temporarily set git user
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Turboversion
-        shell: bash
+      - name: Version bump
         run: npx turboversion bump
 
-      - name: Turbo Release
-        shell: bash
+      # 🚫 NO npm token
+      # 🚫 NO .npmrc auth
+      # ✅ OIDC ONLY
+      - name: Publish packages
         run: pnpm -r publish --no-git-checks --filter=!docs
 
-      - name: Push tags, and commits
-        shell: bash
+      - name: Push tags and commits
         run: git push --tags && git push
