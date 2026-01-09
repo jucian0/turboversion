@@ -43,9 +43,6 @@ jobs:
         shell: bash
         run: npx turboversion bump
 
-      - name: Authenticate with npm
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
       - name: Turbo Release
         shell: bash
         run: pnpm -r publish --no-git-checks --filter=!docs
