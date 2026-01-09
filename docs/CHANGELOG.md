@@ -1,3 +1,12 @@
+# [3.1.0](https://github.com/jucian0/turboversion/compare/v3.0.4...v3.1.0) (2026-01-09)
+
+
+### Features
+
+* **version:** add --prerelease flag for auto-detected prerelease bumps ([1b71e6b](https://github.com/jucian0/turboversion/commit/1b71e6b17bd8d4481f8bf5242eb121d3e6f7ad71))
+
+
+
 ## [3.0.4](https://github.com/jucian0/turboversion/compare/v3.0.3...v3.0.4) (2025-09-23)
 
 
