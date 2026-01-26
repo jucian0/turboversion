@@ -46,7 +46,7 @@ export async function generateVersion({
     const currentVersion =
       semver.parse(latestTag.replace(tagPrefix, "")) ?? "0.0.0";
 
-    const amountCommits = getCommitsLength(path ?? cwd());
+    const amountCommits = getCommitsLength(path ?? cwd(), tagPrefix);
 
     if (latestTag && amountCommits === 0 && !type && !prerelease) {
       return null;

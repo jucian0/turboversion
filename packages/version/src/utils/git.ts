@@ -78,9 +78,10 @@ export async function createGitTag(options: GitTagOptions) {
    return execAsync(command);
 }
 
-export function getCommitsLength(pkgRoot: string) {
+export function getCommitsLength(pkgRoot: string, tagPrefix?: string) {
    try {
-      const gitCommand = `git rev-list --count HEAD ^$(git describe --tags --abbrev=0) ${pkgRoot}`;
+      const matchArg = tagPrefix ? `--match "${tagPrefix}*"` : "";
+      const gitCommand = `git rev-list --count HEAD ^$(git describe --tags --abbrev=0 ${matchArg}) ${pkgRoot}`;
       const amount = execSync(gitCommand).toString().trim();
 
       return Number(amount);
