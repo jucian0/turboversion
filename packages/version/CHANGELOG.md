@@ -1,3 +1,12 @@
+## [3.1.2](https://github.com/jucian0/turboversion/compare/v3.1.1...v3.1.2) (2026-02-24)
+
+
+### Bug Fixes
+
+* use tag prefix in getCommitsLength to correctly detect package changes ([653dcf0](https://github.com/jucian0/turboversion/commit/653dcf02f6ab0f53a401f0487956f1e094b72913))
+
+
+
 ## [3.1.1](https://github.com/jucian0/turboversion/compare/v3.1.0...v3.1.1) (2026-02-24)
 
 
