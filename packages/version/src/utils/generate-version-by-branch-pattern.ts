@@ -32,7 +32,7 @@ export async function generateVersionByBranchPattern({
     const currentVersion =
       semver.parse(latestTag.replace(tagPrefix, "")) ?? "0.0.0";
 
-    const amountCommits = getCommitsLength(path ?? cwd());
+    const amountCommits = getCommitsLength(path ?? cwd(), tagPrefix);
 
     if (latestTag && amountCommits === 0 && !type && !latestTag.includes("-")) {
       return null;
