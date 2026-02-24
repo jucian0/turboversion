@@ -26,12 +26,15 @@ export function updatePackageVersion({ path, version, name }: PackageVersion) {
         );
       }
 
+      const hasTrailingNewline = data.endsWith("\n");
       const packageJson = JSON.parse(data);
       packageJson.version = version;
 
+      const content = JSON.stringify(packageJson, null, 2) + (hasTrailingNewline ? "\n" : "");
+
       fs.writeFile(
         packageJsonPath,
-        JSON.stringify(packageJson, null, 2),
+        content,
         "utf8",
         (err) => {
           if (err) {
