@@ -67,6 +67,7 @@ export async function syncedMode(config: ConfigType, type?: ReleaseType, prerele
             path,
             version,
             name,
+            isSyncBump: true,
           });
           logger.paper({ message: "Generated", packageName: name });
         }
