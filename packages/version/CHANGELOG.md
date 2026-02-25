@@ -1,3 +1,12 @@
+## [3.1.3](https://github.com/jucian0/turboversion/compare/v3.1.2...v3.1.3) (2026-02-25)
+
+
+### Bug Fixes
+
+* **version:** fix empt messages for sync mode [#20](https://github.com/jucian0/turboversion/issues/20) ([b728d79](https://github.com/jucian0/turboversion/commit/b728d79122fc65e271881fdd4eb971e7355e52d9))
+
+
+
 ## [3.1.2](https://github.com/jucian0/turboversion/compare/v3.1.1...v3.1.2) (2026-02-24)
 
 
