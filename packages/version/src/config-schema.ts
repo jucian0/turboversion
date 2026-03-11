@@ -19,15 +19,15 @@ export const versionConfigSchema = z
       .default("commitMessage")
       .describe(
         "The versioning strategy to use, either 'branchPattern' or 'commitMessage'. " +
-          "Select 'branchPattern' if you want to calculate the version based on the branch name, " +
-          "and 'commitMessage' if you want to calculate the version based on the commit message."
+        "Select 'branchPattern' if you want to calculate the version based on the branch name, " +
+        "and 'commitMessage' if you want to calculate the version based on the commit message."
       ),
     preset: z
-      .enum(["angular", "conventional"])
+      .enum(["angular", "conventionalcommits"])
       .default("angular")
       .describe(
         "The commit message convention preset used by commitizen. " +
-          "That applies only when `versionStrategy` is 'commitMessage'"
+        "That applies only when `versionStrategy` is 'commitMessage'"
       ),
     branchPattern: z
       .array(z.string().min(1))
@@ -38,7 +38,7 @@ export const versionConfigSchema = z
       .optional()
       .describe(
         "The pattern to match the branch name. " +
-          "Only applies when `versionStrategy` is 'branchPattern'"
+        "Only applies when `versionStrategy` is 'branchPattern'"
       ),
     commitMessage: z
       .string()
@@ -46,7 +46,7 @@ export const versionConfigSchema = z
       .optional()
       .describe(
         "The commit message, this is just a commit message template, " +
-          "not related with `versionStrategy`."
+        "not related with `versionStrategy`."
       ),
     sync: z
       .boolean()
@@ -66,7 +66,7 @@ export const versionConfigSchema = z
       .optional()
       .describe(
         "A list of package names to skip publishing. " +
-          "When specified, these packages will be excluded from the publish process."
+        "When specified, these packages will be excluded from the publish process."
       ),
     baseBranch: z
       .string()

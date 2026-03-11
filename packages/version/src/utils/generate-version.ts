@@ -3,7 +3,6 @@ import { promisify } from "util";
 import conventionalRecommendedBump from "conventional-recommended-bump";
 import semver from "semver";
 
-import {} from "conventional-recommended-bump";
 import { getCommitsLength } from "./git";
 
 //https://www.npmjs.com/package/semver
@@ -49,6 +48,12 @@ export async function generateVersion({
     const amountCommits = getCommitsLength(path ?? cwd(), tagPrefix);
 
     if (latestTag && amountCommits === 0 && !type && !prerelease) {
+      return null;
+    }
+
+    // If there are commits but none match the configured conventional preset,
+    // do not bump or generate a changelog.
+    if (!recommended && !type && !prerelease) {
       return null;
     }
 

@@ -1,7 +1,6 @@
 import inquirer from "inquirer";
 import { writeFileSync } from "node:fs";
 import { Command } from "commander";
-import chalk from "chalk";
 import { logger } from "../utils/logger";
 
 export function initCommand(): Command {

@@ -7,7 +7,10 @@
       "type": "string",
       "minLength": 1,
       "description": "The prerelease identifier to use when bumping the version",
-      "examples": ["beta", "alpha"]
+      "examples": [
+        "beta",
+        "alpha"
+      ]
     },
     "tagPrefix": {
       "type": "string",
@@ -16,7 +19,10 @@
     },
     "versionStrategy": {
       "type": "string",
-      "enum": ["branchPattern", "commitMessage"],
+      "enum": [
+        "branchPattern",
+        "commitMessage"
+      ],
       "default": "commitMessage",
       "description": "The versioning strategy to use, either 'branchPattern' or 'commitMessage'. Select 'branchPattern' if you want to calculate the version based on the branch name, and 'commitMessage' if you want to calculate the version based on the commit message.",
       "examples": [
@@ -25,7 +31,10 @@
     },
     "preset": {
       "type": "string",
-      "enum": ["angular", "conventional"],
+      "enum": [
+        "angular",
+        "conventionalcommits"
+      ],
       "default": "angular",
       "description": "The commit message convention preset used by commitizen. That applies only when `versionStrategy` is 'commitMessage'"
     },
@@ -39,7 +48,14 @@
       "uniqueItems": true,
       "minItems": 1,
       "description": "The pattern to match the branch name. Only applies when `versionStrategy` is 'branchPattern'",
-      "examples": [["major, minor, patch"], ["break, feat, fix"]]
+      "examples": [
+        [
+          "major, minor, patch"
+        ],
+        [
+          "break, feat, fix"
+        ]
+      ]
     },
     "commitMessage": {
       "type": "string",
@@ -56,7 +72,12 @@
     },
     "updateInternalDependencies": {
       "type": "string",
-      "enum": ["major", "minor", "patch", false],
+      "enum": [
+        "major",
+        "minor",
+        "patch",
+        false
+      ],
       "description": "How to update internal dependencies between packages"
     },
     "skip": {
@@ -67,9 +88,16 @@
         "description": "Name of the package to skip"
       },
       "uniqueItems": true,
-      "example": ["ui", "docs"],
+      "example": [
+        "ui",
+        "docs"
+      ],
       "description": "A list of package names to skip publishing. When specified, these packages will be excluded from the publish process."
     }
   },
-  "required": ["tagPrefix", "baseBranch", "updateInternalDependencies"]
+  "required": [
+    "tagPrefix",
+    "baseBranch",
+    "updateInternalDependencies"
+  ]
 }
