@@ -22,7 +22,7 @@ Customize TurboVersion's behavior through a `version.config.json` file or CLI ar
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `versionStrategy` | `"commitMessage"` \| `"branchPattern"` | `"commitMessage"` | How versions are calculated |
-| `preset` | `"angular"` \| `"conventional"` | `"angular"` | Commit message convention style |
+| `preset` | `"angular"` \| `"conventionalcommits"` | `"angular"` | Commit message convention style |
 | `branchPattern` | `string[]` | `["major", "minor", "patch"]` | Branch prefixes that trigger bumps |
 
 **Example Branch Pattern Config:**
@@ -89,7 +89,7 @@ Customize TurboVersion's behavior through a `version.config.json` file or CLI ar
    ```
 
 2. **Value Restrictions**
-   - `preset` only accepts `angular` or `conventional`
+   - `preset` only accepts `angular` or `conventionalcommits`
    - `updateInternalDependencies` requires semver level or `false`
 
 ## Full Configuration Example

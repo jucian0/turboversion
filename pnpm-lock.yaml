@@ -123,6 +123,9 @@ importers:
       conventional-changelog-angular:
         specifier: ^5.0.13
         version: 5.0.13
+      conventional-changelog-conventionalcommits:
+        specifier: ^4.6.3
+        version: 4.6.3
       conventional-commits-parser:
         specifier: 3.2.4
         version: 3.2.4
