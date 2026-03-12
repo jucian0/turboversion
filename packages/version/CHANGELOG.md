@@ -1,3 +1,12 @@
+## [3.1.4](https://github.com/jucian0/turboversion/compare/v3.1.3...v3.1.4) (2026-03-12)
+
+
+### Bug Fixes
+
+* **version:** update config for conventionalcommits works in right way ([acc1d57](https://github.com/jucian0/turboversion/commit/acc1d570879c74fbb895f85fe7a40e28f0f557d8))
+
+
+
 ## [3.1.3](https://github.com/jucian0/turboversion/compare/v3.1.2...v3.1.3) (2026-02-25)
 
 
