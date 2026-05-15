@@ -97,7 +97,7 @@ release_job:
 ### 1. Prerelease Pipeline
 ```json
 {
-  "prereleaseIdentifier": "beta",
+  "prereleaseIdentifier": "beta.${branchName}",
   "branchPattern": ["release/"],
   "commitMessage": "chore(beta): v${version}"
 }
@@ -105,8 +105,10 @@ release_job:
 **Workflow**:
 ```bash
 git checkout -b release/v2
-turboversion --bump beta
+turboversion --prerelease
 ```
+
+Using `${branchName}` keeps prerelease tags from different branches out of the same sequence. For example, `feature/auth-flow` and `feature/search` can create independent prerelease tags instead of both competing for `v1.1.0-beta.0`.
 
 ### 2. Custom Changelog Groups
 ```json

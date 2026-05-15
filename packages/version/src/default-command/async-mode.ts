@@ -5,10 +5,10 @@ import { generateChangelog } from "../utils/generate-changelog";
 import { generateVersion } from "../utils/generate-version";
 import { generateVersionByBranchPattern } from "../utils/generate-version-by-branch-pattern";
 import { getLatestTag } from "../utils/get-latest-tag";
-import { formatCommitMessage } from "../utils/template-string";
+import { formatCommitMessage, formatPrereleaseIdentifier } from "../utils/template-string";
 import { updatePackageVersion } from "../utils/update-package-version";
 import { summarizePackages } from "../utils/dependents";
-import { gitProcess } from "../utils/git";
+import { fetchTags, gitProcess } from "../utils/git";
 import { logger } from "../utils/logger";
 import { ConfigType } from "../config-schema";
 
@@ -16,6 +16,8 @@ export async function asyncMode(config: ConfigType, type?: ReleaseType, prerelea
   const { preset, baseBranch, branchPattern = [] } = config;
 
   try {
+    await fetchTags();
+
     const packages = await summarizePackages(config);
 
     if (packages.length === 0) {
@@ -28,6 +30,7 @@ export async function asyncMode(config: ConfigType, type?: ReleaseType, prerelea
       message: `Working on package(s)`,
       details: packages.map((pkg) => pkg.packageJson.name).join(", "),
     });
+
     for (const pkg of packages) {
       const name = pkg.packageJson.name;
       const path = pkg.relativeDir;
@@ -41,6 +44,10 @@ export async function asyncMode(config: ConfigType, type?: ReleaseType, prerelea
           sync: Boolean(config.sync),
         });
         const latestTag = await getLatestTag(tagPrefix);
+        const prereleaseIdentifier = formatPrereleaseIdentifier({
+          prereleaseIdentifier: config.prereleaseIdentifier,
+          name,
+        });
 
         let version: string | null = null;
 
@@ -52,7 +59,7 @@ export async function asyncMode(config: ConfigType, type?: ReleaseType, prerelea
             path,
             branchPattern,
             baseBranch,
-            prereleaseIdentifier: config.prereleaseIdentifier,
+            prereleaseIdentifier,
           });
         } else {
           version = await generateVersion({
@@ -62,7 +69,7 @@ export async function asyncMode(config: ConfigType, type?: ReleaseType, prerelea
             type: type ?? (pkg.type as ReleaseType),
             path,
             name,
-            prereleaseIdentifier: config.prereleaseIdentifier,
+            prereleaseIdentifier,
             prerelease,
           });
         }

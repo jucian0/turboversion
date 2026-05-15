@@ -38,17 +38,19 @@ Customize TurboVersion's behavior through a `version.config.json` file or CLI ar
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `tagPrefix` | `string` | `"v"` | Prefix for Git tags (e.g., `pkg@1.0.0`) |
-| `prereleaseIdentifier` | `string` | `null` | Prerelease tag (e.g., `-beta`, `-alpha`) |
+| `prereleaseIdentifier` | `string` | `null` | Prerelease tag (e.g., `beta`, `alpha`, `beta.${branchName}`) |
 | `commitMessage` | `string` | `"chore(release): ${version} [skip-ci]"` | Template for release commits |
 
 **Custom Tag Example:**
 ```json
 {
   "tagPrefix": "pkg-",
-  "prereleaseIdentifier": "beta"
+  "prereleaseIdentifier": "beta.${branchName}"
 }
-// Generates tag: pkg-1.0.0-beta.1
+// On feature/auth-flow, generates a tag like: pkg-1.0.0-beta-feature-auth-flow.0
 ```
+
+`prereleaseIdentifier` supports `${branchName}`, `${packageName}`, and `${target}` templates. Template output is sanitized into a SemVer-safe identifier, so `beta.${branchName}` on `feature/auth-flow` becomes `beta-feature-auth-flow`. `${branchName}` is useful in prerelease pipelines because each feature branch gets its own prerelease stream instead of sharing one global `beta.0`, `beta.1` sequence.
 
 ### 🧩 Monorepo Controls
 
@@ -76,6 +78,14 @@ Customize TurboVersion's behavior through a `version.config.json` file or CLI ar
 | `baseBranch` | `string` | `"main"` | Branch to compare changes against |
 | `skipHooks` | `boolean` | `false` | Bypass Git commit hooks |
 | `analyzeCommitsSince` | `string` | `"last-release"` | Alternative: `"tag:v1.0.0"` |
+
+TurboVersion refreshes remote tags before calculating versions by running `git fetch --tags --force origin`. CI jobs should still use full checkout history so commit and tag analysis have the data they need:
+
+```yaml
+- uses: actions/checkout@v4
+  with:
+    fetch-depth: 0
+```
 
 ### ⚠️ Validation Rules
 

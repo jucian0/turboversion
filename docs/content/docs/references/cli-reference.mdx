@@ -86,6 +86,16 @@ turboversion --bump minor
 turboversion --prerelease
 ```
 
+To isolate prerelease streams per branch, configure:
+
+```json
+{
+  "prereleaseIdentifier": "beta.${branchName}"
+}
+```
+
+TurboVersion fetches remote tags before calculating versions. In CI, keep `fetch-depth: 0` on checkout so commit and tag analysis has full history.
+
 ---
 
 ## Exit Codes
