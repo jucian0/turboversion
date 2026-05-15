@@ -1,3 +1,12 @@
+## [3.1.5](https://github.com/jucian0/turboversion/compare/v3.1.4...v3.1.5) (2026-05-15)
+
+
+### Bug Fixes
+
+* prevent prerelease tag collisions ([#26](https://github.com/jucian0/turboversion/issues/26)) ([d58e93f](https://github.com/jucian0/turboversion/commit/d58e93f6eae9b877b1810e8f8eed411afad8451d))
+
+
+
 ## [3.1.4](https://github.com/jucian0/turboversion/compare/v3.1.3...v3.1.4) (2026-03-12)
 
 
