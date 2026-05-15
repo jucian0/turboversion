@@ -122,7 +122,7 @@ Configure Turboversion to match your workflow:
   "skip": ["private-pkg"],
   "versionStrategy": "commitMessage",
   "branchPattern": ["major", "minor", "patch"],
-  "prereleaseIdentifier": "beta",
+  "prereleaseIdentifier": "beta.${branchName}",
   "skipHooks": false
 }
 ```
@@ -135,7 +135,17 @@ Configure Turboversion to match your workflow:
 | baseBranch            | Your main branch                   | main     |
 | sync                  | Sync versioning mode               | false    |
 | versionStrategy       | `commitMessage` or `branchPattern` | commitMessage |
-| prereleaseIdentifier  | Prerelease tag (e.g., beta)        | -        |
+| prereleaseIdentifier  | Prerelease tag (e.g., beta or beta.${branchName}) | -        |
+
+`prereleaseIdentifier` supports template values. Use `${branchName}` to keep prerelease streams isolated per branch:
+
+```json
+{
+  "prereleaseIdentifier": "beta.${branchName}"
+}
+```
+
+For example, `feature/auth-flow` generates a branch-specific prerelease identifier like `beta-feature-auth-flow` instead of sharing the same `beta.0`, `beta.1` sequence with other branches.
 
 ## PNPM Workflow (Recommended)
 

@@ -1,7 +1,7 @@
 import { exec, execSync as syncExec } from "node:child_process";
 import { existsSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { cwd } from "node:process";
+import { cwd, env } from "node:process";
 import { promisify } from "node:util";
 
 const promisifiedExec = promisify(exec);
@@ -44,6 +44,15 @@ export async function push(branch: string, { force }: any = {}) {
 
 export async function pushTags() {
    await execAsync("git push origin --tags");
+}
+
+export async function fetchTags(remote = "origin") {
+   try {
+      await execAsync(`git fetch --tags --force ${remote}`);
+      return true;
+   } catch {
+      return false;
+   }
 }
 
 async function gitAdd(files: string[]) {
@@ -194,6 +203,11 @@ export async function lastMergeBranchName(
 
 
 export function getCurrentBranch() {
+   const branchName = env.GITHUB_HEAD_REF || env.GITHUB_REF_NAME;
+   if (branchName) {
+      return branchName;
+   }
+
    const result = execSync("git rev-parse --abbrev-ref HEAD");
    return result.toString().trim();
 }

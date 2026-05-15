@@ -7,7 +7,9 @@ export const versionConfigSchema = z
       .string()
       .min(1)
       .optional()
-      .describe("The prerelease identifier to use when bumping the version")
+      .describe(
+        "The prerelease identifier to use when bumping the version. Supports ${branchName}, ${packageName}, and ${target} templates."
+      )
       .default("beta"),
     tagPrefix: z
       .string()

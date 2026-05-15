@@ -3,7 +3,7 @@
   "tagPrefix": "v",
   "versionStrategy": "commitMessage",
   "preset": "angular",
-  "prereleaseIdentifier": "beta",
+  "prereleaseIdentifier": "beta.${branchName}",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "sync": true,

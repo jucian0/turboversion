@@ -5,10 +5,10 @@ import { generateChangelog } from "../utils/generate-changelog";
 import { generateVersion } from "../utils/generate-version";
 import { generateVersionByBranchPattern } from "../utils/generate-version-by-branch-pattern";
 import { getLatestTag } from "../utils/get-latest-tag";
-import { formatCommitMessage } from "../utils/template-string";
+import { formatCommitMessage, formatPrereleaseIdentifier } from "../utils/template-string";
 import { updatePackageVersion } from "../utils/update-package-version";
 import { logger } from "../utils/logger";
-import { gitProcess } from "../utils/git";
+import { fetchTags, gitProcess } from "../utils/git";
 import { ConfigType } from "../config-schema";
 
 export async function singleMode(config: ConfigType, options: any) {
@@ -18,6 +18,8 @@ export async function singleMode(config: ConfigType, options: any) {
   const { packages: pkgs } = getPackagesSync(cwd());
 
   try {
+    await fetchTags();
+
     const packages = pkgs
       .filter(
         (pkg) =>
@@ -35,6 +37,10 @@ export async function singleMode(config: ConfigType, options: any) {
       });
 
       const latestTag = await getLatestTag(tagPrefix);
+      const prereleaseIdentifier = formatPrereleaseIdentifier({
+        prereleaseIdentifier: config.prereleaseIdentifier,
+        name,
+      });
       let version: string | null = null;
 
       if (config.versionStrategy === "branchPattern") {
@@ -45,7 +51,7 @@ export async function singleMode(config: ConfigType, options: any) {
           path,
           branchPattern,
           baseBranch,
-          prereleaseIdentifier: config.prereleaseIdentifier,
+          prereleaseIdentifier,
         });
       } else {
         version = await generateVersion({
@@ -55,7 +61,7 @@ export async function singleMode(config: ConfigType, options: any) {
           type,
           path,
           name,
-          prereleaseIdentifier: config.prereleaseIdentifier,
+          prereleaseIdentifier,
         });
       }
 
