@@ -47,18 +47,34 @@ export async function generateVersion({
 
     const amountCommits = getCommitsLength(path ?? cwd(), tagPrefix);
 
-    if (latestTag && amountCommits === 0 && !type && !prerelease) {
+    // A prerelease is an open release. Asking for a stable version while one is
+    // open means closing it, so neither guard below applies: there is work to
+    // release even when no new commit came in. The branchPattern strategy
+    // already behaves this way.
+    const closingPrerelease =
+      semver.prerelease(currentVersion) !== null && !prerelease;
+
+    if (
+      latestTag &&
+      amountCommits === 0 &&
+      !type &&
+      !prerelease &&
+      !closingPrerelease
+    ) {
       return null;
     }
 
     // If there are commits but none match the configured conventional preset,
     // do not bump or generate a changelog.
-    if (!recommended && !type && !prerelease) {
+    if (!recommended && !type && !prerelease && !closingPrerelease) {
       return null;
     }
 
-    // Determine the bump type to use
-    let bumpType: semver.ReleaseType = type ?? recommended;
+    // Determine the bump type to use. Closing a prerelease with nothing else to
+    // release is a patch, which semver resolves by dropping the prerelease and
+    // keeping the numbers: 1.5.1-rc.0 -> 1.5.1. A recommendation, when there is
+    // one, already graduates on its own and outranks this.
+    let bumpType: semver.ReleaseType = type ?? recommended ?? "patch";
 
     // Convert to prerelease type when --prerelease flag is set
     if (prerelease && !type) {
