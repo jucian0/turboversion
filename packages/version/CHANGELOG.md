@@ -1,3 +1,12 @@
+## [3.1.6](https://github.com/jucian0/turboversion/compare/v3.1.5...v3.1.6) (2026-09-28)
+
+
+### Bug Fixes
+
+* **version:** close an open prerelease on a stable release ([8cd8af4](https://github.com/jucian0/turboversion/commit/8cd8af4d517b1affd9a7e6d0b9da280d738928da))
+
+
+
 ## [3.1.5](https://github.com/jucian0/turboversion/compare/v3.1.4...v3.1.5) (2026-05-15)
 
 
