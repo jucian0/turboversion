@@ -1,3 +1,12 @@
+## [3.1.7](https://github.com/jucian0/turboversion/compare/v3.1.6...v3.1.7) (2026-10-02)
+
+
+### Bug Fixes
+
+* **version:** take the highest reachable tag as the latest release ([a88501a](https://github.com/jucian0/turboversion/commit/a88501a3e231c868316c5dd22aa7dfa4636f6883))
+
+
+
 ## [3.1.6](https://github.com/jucian0/turboversion/compare/v3.1.5...v3.1.6) (2026-09-28)
 
 
