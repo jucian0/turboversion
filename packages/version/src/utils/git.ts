@@ -3,6 +3,7 @@ import { existsSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { cwd, env } from "node:process";
 import { promisify } from "node:util";
+import { getLatestTagSync } from "./get-latest-tag";
 
 const promisifiedExec = promisify(exec);
 
@@ -89,13 +90,35 @@ export async function createGitTag(options: GitTagOptions) {
 
 export function getCommitsLength(pkgRoot: string, tagPrefix?: string) {
    try {
-      const matchArg = tagPrefix ? `--match "${tagPrefix}*"` : "";
-      const gitCommand = `git rev-list --count HEAD ^$(git describe --tags --abbrev=0 ${matchArg}) ${pkgRoot}`;
+      const latestTag = getLatestTagSync(tagPrefix ?? "");
+      if (!latestTag) {
+         return 0;
+      }
+      const gitCommand = `git rev-list --count ${latestTag}..HEAD -- "${pkgRoot}"`;
       const amount = execSync(gitCommand).toString().trim();
 
       return Number(amount);
    } catch {
       return 0;
+   }
+}
+
+export function tagExists(tag: string) {
+   try {
+      execSync(`git rev-parse -q --verify "refs/tags/${tag}"`, {
+         stdio: "ignore",
+      });
+      return true;
+   } catch {
+      return false;
+   }
+}
+
+export function assertTagAvailable(tag: string, latestTag: string) {
+   if (tagExists(tag)) {
+      throw new Error(
+         `Tag ${tag} already exists. The version was calculated from ${latestTag || "no tag"}, the highest tag reachable from HEAD, so the commit tagged ${tag} is not part of this branch. Merge it in or check where ${tag} was created.`,
+      );
    }
 }
 

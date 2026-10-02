@@ -8,7 +8,7 @@ import { getLatestTag } from "../utils/get-latest-tag";
 import { formatCommitMessage, formatPrereleaseIdentifier } from "../utils/template-string";
 import { updatePackageVersion } from "../utils/update-package-version";
 import { logger } from "../utils/logger";
-import { fetchTags, gitProcess } from "../utils/git";
+import { assertTagAvailable, fetchTags, gitProcess } from "../utils/git";
 import { ConfigType } from "../config-schema";
 
 export async function singleMode(config: ConfigType, options: any) {
@@ -72,6 +72,7 @@ export async function singleMode(config: ConfigType, options: any) {
         });
 
         const nextTag = formatTag({ tagPrefix, version });
+        assertTagAvailable(nextTag, latestTag);
         await updatePackageVersion({ path, version, name });
         logger.paper({
           message: "Package version updated",

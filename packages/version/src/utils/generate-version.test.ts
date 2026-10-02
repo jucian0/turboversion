@@ -8,12 +8,9 @@ const mockState: {
   commitsLength: 0,
 };
 
-jest.mock(
-  "conventional-recommended-bump",
-  () =>
-    (_options: unknown, callback: (error: unknown, result: unknown) => void) =>
-      callback(null, mockState.recommendation)
-);
+jest.mock("./recommend-bump", () => ({
+  recommendBump: async () => mockState.recommendation.releaseType,
+}));
 
 jest.mock("./git", () => ({
   getCommitsLength: () => mockState.commitsLength,

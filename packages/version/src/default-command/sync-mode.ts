@@ -8,7 +8,7 @@ import { generateVersionByBranchPattern } from "../utils/generate-version-by-bra
 import { getLatestTag } from "../utils/get-latest-tag";
 import { formatCommitMessage, formatPrereleaseIdentifier } from "../utils/template-string";
 import { updatePackageVersion } from "../utils/update-package-version";
-import { fetchTags, gitProcess } from "../utils/git";
+import { assertTagAvailable, fetchTags, gitProcess } from "../utils/git";
 import { logger } from "../utils/logger";
 import { ConfigType } from "../config-schema";
 
@@ -54,6 +54,7 @@ export async function syncedMode(config: ConfigType, type?: ReleaseType, prerele
         packageName: "All",
       });
       const nextTag = formatTag({ tagPrefix, version });
+      assertTagAvailable(nextTag, latestTag);
 
       for (const pkg of packages) {
         const { name } = pkg.packageJson;

@@ -1,14 +1,10 @@
 import { cwd } from "node:process";
-import { promisify } from "util";
-import conventionalRecommendedBump from "conventional-recommended-bump";
 import semver from "semver";
 
 import { getCommitsLength } from "./git";
+import { recommendBump } from "./recommend-bump";
 
 //https://www.npmjs.com/package/semver
-//https://www.npmjs.com/package/conventional-recommended-bump
-
-const recommendedBumpAsync = promisify(conventionalRecommendedBump);
 
 type Version = {
   latestTag: string;
@@ -32,16 +28,11 @@ export async function generateVersion({
   prerelease,
 }: Version) {
   try {
-    const recommendation: any = await recommendedBumpAsync(
-      Object.assign(
-        {
-          preset,
-          tagPrefix,
-        },
-        path ? { lernaPackage: name, path } : {}
-      )
-    );
-    const recommended = recommendation?.releaseType;
+    const recommended = await recommendBump({
+      preset,
+      from: latestTag,
+      path,
+    });
     const currentVersion =
       semver.parse(latestTag.replace(tagPrefix, "")) ?? "0.0.0";
 
@@ -83,7 +74,7 @@ export async function generateVersion({
         minor: "preminor",
         patch: "prepatch",
       };
-      bumpType = prereleaseMap[recommended] ?? "prerelease";
+      bumpType = (recommended && prereleaseMap[recommended]) ?? "prerelease";
     }
 
     const next = semver.inc(
