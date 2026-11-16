@@ -1,3 +1,7 @@
+## [3.1.8](v3.1.8) (2026-11-16)
+
+**Note:** Version bump only for package synchronization
+
 ## [3.1.7](v3.1.7) (2026-10-02)
 
 **Note:** Version bump only for package synchronization

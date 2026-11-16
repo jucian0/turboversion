@@ -1,3 +1,7 @@
+## [3.1.8](v3.1.8) (2026-11-16)
+
+**Note:** Version bump only for package synchronization
+
 ## [3.1.7](https://github.com/jucian0/turboversion/compare/v3.1.6...v3.1.7) (2026-10-02)
 
 
